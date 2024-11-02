@@ -1,8 +1,16 @@
-import { NextResponse } from 'next/response';
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json();
+    const data = await resend.emails.send({
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['alexanderh24@gmail.com'],
+      subject: 'hello world',
+      html: '<p>it works!</p>',
+    });
     const { name, email, message, phone } = data;
     
     // Here you would typically integrate with your email service
